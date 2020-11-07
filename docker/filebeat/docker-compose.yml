@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  filebeat:
+    build:
+      context: .
+      args:
+        ELK_VERSION: $ELK_VERSION
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - /home/vkorneychuk/Programming/Java/elk_log_app/docker/test_logs:/var/lib/docker/containers
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml

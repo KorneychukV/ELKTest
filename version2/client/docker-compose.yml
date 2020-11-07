@@ -1,0 +1,17 @@
+filebeat:
+  build: ./filebeat
+  restart: always
+  volumes:
+    - /home/vkorneychuk/Programming/Java/elk_log_app/version2/volumes/postfix:/logs/postfix
+  hostname: filebeat-postfix
+ 
+postfix:
+  build: ./postfix
+  restart: always
+  ports:
+    - "25:25"
+  environment:
+    - TERM=xterm
+    - MAIL_HOSTNAME=mail.example.com
+  volumes:
+    - /home/vkorneychuk/Programming/Java/elk_log_app/version2/volumes/postfix:/var/log/postfix

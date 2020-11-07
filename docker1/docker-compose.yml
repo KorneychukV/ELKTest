@@ -1,0 +1,50 @@
+version: '2'
+services: 
+
+  #elk_nginx:
+  #  image: nginx
+  #  depends_on:
+  #    - "kibana"
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  volumes:
+  #    - './nginx/conf:/etc/nginx/conf.d'
+
+  kibana:
+    #restart: unless-stopped
+    #hostname: kibana.example.com
+    image: kibana:7.9.2
+    links:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    container_name: kibana
+ 
+  logstash:
+    #restart: unless-stopped
+    #hostname: logstash.example.com
+    build: ./logstash
+    ports:
+      - 32800:5044
+    links:
+      - elasticsearch
+    container_name: logstash
+ 
+  elasticsearch:
+    #restart: unless-stopped
+    #hostname: elasticsearch.example.com
+    image: elasticsearch:7.9.2
+    volumes:
+      - ./elasticsearch_data:/usr/share/elasticsearch/data
+      - ./elasticsearch_logs:/usr/share/elasticsearch/logs
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+
+  filebeat:
+    image: olinicola/filebeat:1.2.3
+    volumes:
+      - /home/vkorneychuk/Programming/Java/elk_log_app/docker/filebeat/logs:/etc/logs/test # логи nginx
+      - /home/vkorneychuk/Programming/Java/elk_log_app/docker/filebeat:/etc/filebeat
+      - /home/vkorneychuk/Programming/Java/elk_log_app/docker/filebeat/tmp:/tmp/filebeat

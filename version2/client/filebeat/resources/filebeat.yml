@@ -1,0 +1,11 @@
+filebeat.prospectors:
+ 
+- input_type: log
+  paths:
+    - /logs/postfix/maillog
+  document_type: postfix
+ 
+output.logstash:
+  hosts: ["elk.example.com:5044"]
+ 
+tags: ["mail", "postfix"]
