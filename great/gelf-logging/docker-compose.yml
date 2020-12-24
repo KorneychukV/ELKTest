@@ -1,0 +1,19 @@
+version: '3'
+services:
+    app4elk_first:
+        image: app4elk
+        ports:
+            - '8080:8080'
+        networks:
+            - elk_lab
+    app4elk_second:
+        image: app4elk
+        ports:
+            - '8081:8080'
+        networks:
+            - elk_lab
+
+networks:
+  elk_lab:
+    external:
+      name: elk_lab
